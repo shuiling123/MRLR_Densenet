@@ -166,7 +166,7 @@ def plot_confusion_matrix(y_true, y_pred, class_names, save_dir='./results'):
     cm_normalized = cm.astype('float') / cm.sum(axis=1, keepdims=True)
     cm_normalized = np.nan_to_num(cm_normalized)
 
-    plt.rcParams['font.sans-serif'] = ['SimHei', 'DejaVu Sans']
+    plt.rcParams['font.sans-serif'] = ['DejaVu Sans']  # Use English font
     plt.rcParams['axes.unicode_minus'] = False
 
     plt.figure(figsize=(10, 8))
@@ -241,7 +241,7 @@ def plot_individual_metrics(history, save_dir='./results'):
     """
     os.makedirs(save_dir, exist_ok=True)
 
-    plt.rcParams['font.sans-serif'] = ['SimHei', 'DejaVu Sans']
+    plt.rcParams['font.sans-serif'] = ['DejaVu Sans']
     plt.rcParams['axes.unicode_minus'] = False
 
     epochs = range(1, len(history['train_loss']) + 1)
@@ -318,7 +318,7 @@ def visualize_training_results(history, save_dir='./results'):
     """
     os.makedirs(save_dir, exist_ok=True)
 
-    plt.rcParams['font.sans-serif'] = ['SimHei', 'DejaVu Sans']
+    plt.rcParams['font.sans-serif'] = ['DejaVu Sans']
     plt.rcParams['axes.unicode_minus'] = False
 
     epochs = range(1, len(history['train_loss']) + 1)
@@ -724,8 +724,10 @@ if __name__ == '__main__':
     parser.add_argument('--mixup-alpha', type=float, default=0.,
                         help='Mixup hyperparameter, >0 enables mixup (e.g., 0.2)')
 
+    # Dataset path: adjust to your ISIC 2019 data location
     parser.add_argument('--data-path', type=str,
-                        default=r"数据集/isic2019")
+                        default=r"isic2019",
+                        help="Path to the ISIC 2019 dataset folder (contains train/val subfolders or images)")
     parser.add_argument('--weights', type=str, default='',
                         help='Initial weights path')
     parser.add_argument('--freeze-layers', type=bool, default=False)
