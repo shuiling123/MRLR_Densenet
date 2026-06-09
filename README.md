@@ -1,42 +1,63 @@
-# MRLR-DenseNet: Skin Lesion Classification with Dynamic Multi‑scale Routing and Lightweight Residual Refinement
+# MRLR-DenseNet: Fusing Dynamic Multi‑Scale Routing and Lightweight Residual Refinement for Skin Lesion Classification
 
-This repository implements **MRLR-DenseNet** – an improved DenseNet architecture for **dermoscopic skin lesion classification**, as described in the paper:
+This repository provides the official PyTorch implementation of **MRLR-DenseNet**, an improved DenseNet architecture for dermoscopic skin lesion classification, as proposed in the paper:
 
 > **Fusing Dynamic Multi‑Scale Routing and Lightweight Residual Refinement for Skin Lesion Classification**  
 > He Guangze, Li Yang, Yan Junfeng  
-> *School of Information Science and Engineering, Hunan University of Chinese Medicine*
+> *School of Information Science and Engineering, Hunan University of Chinese Medicine*  
+> *AI TCM Lab Hunan, Changsha, China*
 
-The model introduces two novel modules:
-- **DMR (Dynamic Multi‑scale Routing)** – hierarchically extracts and adaptively fuses multi‑scale features using depthwise and dilated depthwise convolutions with spatial routing weights.
-- **LRF (Lightweight Residual Refinement)** – refines intermediate feature maps with depthwise separable convolutions and residual connections, adding minimal parameters.
+The model introduces three key improvements over standard DenseNet:
+1. **Improved DenseLayer** – Replaces the single 3×3 convolution with a dual‑branch (3×3 and 5×5) structure for enhanced local multi‑scale feature extraction.
+2. **Lightweight Residual Refinement (LRF)** – Inserted after the first three DenseBlocks, these modules refine intermediate features with depthwise separable convolutions and a residual connection, preserving edge/texture details with minimal parameters.
+3. **Dynamic Multi‑scale Routing (DMR)** – Placed at the end of the backbone, this module generates hierarchical multi‑scale responses (using 5×5, 7×7 dilated, and 9×9 dilated depthwise convolutions) and fuses them via spatially adaptive routing weights.
 
-## 📋 Key Features
-
-- Improved DenseNet backbone:  
-  - Two consecutive 3×3 convolutions replace the initial 7×7 convolution.  
-  - Each DenseLayer uses a 3×3 & 5×5 dual‑branch for local multi‑scale extraction.  
-- DMR module at the end of the network performs spatially‑adaptive multi‑scale fusion.  
-- LRF modules inserted after the first three DenseBlocks to strengthen edge/texture information.  
-- Trained/evaluated on the **ISIC 2019** dataset (8 classes, 25,331 images, imbalanced).  
-- Achieves **85.58% accuracy**, **85.66% precision**, **85.85% recall**, **85.67% F1‑score** (improving DenseNet121 by +3.69% accuracy and +4.11% F1).  
-- Full training pipeline: automatic data splitting, mixup augmentation, learning rate warmup + cosine decay, Grad‑CAM visualization, confusion matrix, and classification report.
-
-## 🚀 Getting Started
-
-### Prerequisites
-
-- Python 3.9+
-- PyTorch 2.5.1+ (with CUDA 11.8 recommended)
-- Other dependencies: see `requirements.txt` below.
+The model is evaluated on the **ISIC 2019** dataset (8 classes, 25,331 images, imbalanced) and achieves **85.58% accuracy**, **85.66% precision**, **85.85% recall**, and **85.67% F1‑score**, outperforming DenseNet121 by +3.69% accuracy and +4.11% F1‑score.
 
 
-Place the ISIC 2019 dataset in the following structure:
+##  Model Architecture Overview
+
+- **Backbone**: DenseNet121
+- **Initial Layer**: Two consecutive 3×3 convolutions (instead of the original 7×7 conv)
+- **DenseBlock**: Each DenseLayer uses a 3×3 + 5×5 dual‑branch (outputs added element‑wise)
+- **LRF Modules**: Inserted after the first three DenseBlocks (before each transition layer)
+- **DMR Module**: Applied after the final DenseBlock and batch normalization – performs hierarchical multi‑scale routing and spatial recalibration
+- **Classifier**: Global average pooling + fully connected layer
+
+For detailed architecture diagrams, please refer to the original paper.
+
+##  Dataset Information
+
+- **Dataset**: ISIC 2019 Skin Lesion Classification Challenge
+- **Source**: [ISIC 2019 on Kaggle](https://www.kaggle.com/datasets/interestingstats/isic2019-dataset/data)
+- **Total Images**: 25,331
+- **Classes**: 8 – Melanoma (MEL), Melanocytic Nevus (NV), Basal Cell Carcinoma (BCC), Actinic Keratosis (AK), Benign Keratosis (BKL), Dermatofibroma (DF), Vascular Lesion (VASC), Squamous Cell Carcinoma (SCC)
+- **Class Distribution**: Imbalanced (NV: 12,875; SCC: 327)
+- **Split**: 8:2 stratified random split (20,179 train / 5,152 validation)
+
+##  Requirements
+
+torch>=2.5.1
+torchvision>=0.20.1
+numpy>=1.24.0
+matplotlib>=3.7.0
+scikit-learn>=1.3.0
+opencv-python>=4.8.0
+pillow>=10.0.0
+tqdm>=4.66.0
+
+
+##  Data Preparation
+
 isic2019/
 ├── train/
-│   ├── class_0/
-│   ├── class_1/
-│   └── ...
-└── test/
-    ├── class_0/
-    ├── class_1/
-    └── ...
+│   ├── MEL/
+│   ├── NV/
+│   ├── BCC/
+│   ├── AK/
+│   ├── BKL/
+│   ├── DF/
+│   ├── VASC/
+│   └── SCC/
+└── test/               # optional; you may also split programmatically
+    └── (same class subfolders)
