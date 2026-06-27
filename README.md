@@ -33,18 +33,17 @@ For detailed architecture diagrams, please refer to the original paper.
 - **Total Images**: 25,331
 - **Classes**: 8 – Melanoma (MEL), Melanocytic Nevus (NV), Basal Cell Carcinoma (BCC), Actinic Keratosis (AK), Benign Keratosis (BKL), Dermatofibroma (DF), Vascular Lesion (VASC), Squamous Cell Carcinoma (SCC)
 - **Class Distribution**: Imbalanced (NV: 12,875; SCC: 327)
-- **Split**: 8:2 stratified random split (20,179 train / 5,152 validation)
+- **Split**: 8:2 stratified random split (20,179 train / 5,152 test)
 
-##  Requirements
+##  Installation
 
-torch>=2.5.1
-torchvision>=0.20.1
-numpy>=1.24.0
-matplotlib>=3.7.0
-scikit-learn>=1.3.0
-opencv-python>=4.8.0
-pillow>=10.0.0
-tqdm>=4.66.0
+git clone https://github.com/shuiling123/MRLR_Densenet.git
+cd MRLR_Densenet
+
+pip install -r requirements.txt
+
+##  Training
+python train.py
 
 
 ##  Data Preparation
@@ -59,5 +58,23 @@ isic2019/
 │   ├── DF/
 │   ├── VASC/
 │   └── SCC/
-└── test/               # optional; you may also split programmatically
+└── test/               
     └── (same class subfolders)
+
+
+
+##  Citation
+
+@article{codella2019skin,
+  title={Skin lesion analysis toward melanoma detection 2019: A challenge hosted by the international skin imaging collaboration (ISIC)},
+  author={Codella, Noel and Rotemberg, Veronica and Tschandl, Philipp and Celebi, M Emre and Dusza, Stephen and Gutman, David and Helba, Brian and Kalloo, Aadi and Liopyris, Konstantinos and Marchetti, Michael and others},
+  journal={arXiv preprint arXiv:1902.03368},
+  year={2019}
+}
+
+
+##  License
+
+Code: This project is licensed under the MIT License.
+
+Dataset: The ISIC 2019 dataset is publicly available for non-commercial research use under the CC BY-NC 4.0 license (https://creativecommons.org/licenses/by-nc/4.0/).
