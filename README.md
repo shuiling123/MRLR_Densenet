@@ -34,6 +34,9 @@ For detailed architecture diagrams, please refer to the original paper.
 - **Classes**: 8 – Melanoma (MEL), Melanocytic Nevus (NV), Basal Cell Carcinoma (BCC), Actinic Keratosis (AK), Benign Keratosis (BKL), Dermatofibroma (DF), Vascular Lesion (VASC), Squamous Cell Carcinoma (SCC)
 - **Class Distribution**: Imbalanced (NV: 12,875; SCC: 327)
 - **Split**: 8:2 stratified random split (20,179 train / 5,152 test)
+  
+**Please download the dataset from the provided source link, as large files cannot be uploaded to this repository.**
+
 
 ##  Installation
 
